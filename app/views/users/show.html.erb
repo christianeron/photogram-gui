@@ -1,1 +1,63 @@
-<h1> username </h1>
+<h1> <%= @this_user.username %></h1>
+
+<div><%= params %></div>
+
+<dl>
+  <dt>
+    ID
+  </dt>
+  <dd>
+    <%= @this_user.id %>
+  </dd>
+  <dt>
+    Edit User
+  </dt>
+  <dd>
+    <form action="/update_user/<%= @this_user.username %>" method="post">
+      <label for="username_id">Username</label>
+      <input id="username_id" type = "text" name="query_name" placeholder="Enter a username..." value=<%= @this_user.username %>>
+      <button>Update user</button>
+    </form>
+  </dd>
+</dl>
+
+<h2>Own photos (<%= @this_user.own_photos.count %>)</h2>
+
+<table border="1">
+	<tr>
+    <th>
+      Image
+    </th>
+    <th>
+      Owner
+    </th>
+    <th>
+      Caption
+    </th>
+    <th>
+      Posted
+    </th>
+    <th>
+    </th>
+	</tr>
+  <% @this_user.own_photos.order({:created_at => :asc }).each do |photo| %>
+	<tr>
+    <td>
+      <img src ="<%= photo.image %>">
+    </td>
+    <td>
+      <%= photo.poster.username %>
+    </td>
+    <td>
+      <%= photo.caption %>
+    </td>
+
+    <td>
+      <%= photo.created_at %>
+    </td>
+    <td>
+      <a href = "/photos/<%= photo.id%>">Show details</a>
+    </td>
+	</tr>
+  <% end %>
+</table>

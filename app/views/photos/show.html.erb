@@ -1,1 +1,92 @@
 <h1> Photo Details </h1>
+
+<dl>
+  <dt>
+    Image
+  </dt>
+  <dd>
+    <img src="<%= @this_photo.image %>">
+  </dd>
+  <dt>
+    Caption
+  </dt>
+  <dd>
+    <%= @this_photo.caption %>
+  </dd>
+  <dt>
+    Owner
+  </dt>
+  <dd>
+    <%= @this_photo.poster.username %>
+  </dd>
+  <dt>
+    Posted
+  </dt>
+  <dd>
+    <%= @this_photo.created_at %>
+  </dd>
+  <dt>
+    Edit User
+  </dt>
+  <dd>
+    <form action="/update_photo/<%= @this_photo.id %>" method="post">
+      <label for="image_id">Image</label>
+      <input id="image_id" type = "text" name="query_image" placeholder="Enter a URL for the image..." value=<%= @this_photo.image%>>
+      <label for="caption_id">Caption</label>
+      <textarea id="caption_id" name="query_caption" placeholder="Enter a caption for the photo..."><%= @this_photo.caption%></textarea>
+      <button>Update photo</button>
+    </form>
+  </dd>
+  <dt>
+    Delete photo
+  </dt>
+  <dd>
+    <a href="/delete_photo/<%= @this_photo.id %>">Delete this photo</a>
+  </dd>
+</dl>
+
+<h2>Comments</h2>
+
+<table>
+  <tr>
+    <th>
+      Commenter
+    </th>
+
+    <th>
+      Comment
+    </th>
+
+    <th>
+      Posted
+    </th>
+  </tr>
+
+  <% @this_photo.comments.order({:created_at => :desc}).each do |comment| %>
+  <tr>
+    <td>
+      <%= comment.commenter.username %>
+    </td>
+
+    <td>
+      <%= comment.body %>
+    </td>
+
+    <td>
+      <%= comment.created_at %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<h3>Add a new comment</h3>
+
+<form action="/create_comment" method="post">
+  <label for="photo_id">Photo ID</label>
+  <input id="photo_id" type = "text" name="query_photo" placeholder="Enter the photo ID" value=<%= @this_photo.id%>>
+  <label for="author_id">Author ID</label>
+  <input id="author_id" name="query_author" placeholder="Enter your author ID">
+  <label for="comment_id">Comment</label>
+  <textarea id="comment_id" type = "text" name="query_comment" placeholder="Enter a comment..."></textarea>
+  <button>Add comment</button>
+</form>
